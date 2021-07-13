@@ -8,18 +8,18 @@ import {
   TextInput,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
+
+import { COLORS } from './assets/styles';
 
 export default function App() {
   const [deviceId, setDeviceId] = useState('');
 
   useEffect(() => {
-    // Check if the device has a uuid in memory
-    // If it hasn't, will create one and send it to firebase to create a new user.
-    const id = uuidv4();
-    setDeviceId(id);
-  }, [setDeviceId]);
+    // Check if the device has a id in memory
+    // If it hasn't, will create one and send it to the api to create a new user.
+    // Sending the device name as well, to identify it in the app.
+    setDeviceId('brique');
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -36,8 +36,8 @@ export default function App() {
         <Text style={styles.buttonText}> My Guardians </Text>
       </TouchableOpacity>
       <SafeAreaView style={styles.guardianIdContainer}>
-        <Text style={styles.guardianIdText}>Your guardian ID </Text>
-        {deviceId && <QRCode height={500} width={500} value={deviceId} />}
+        <Text style={styles.guardianIdText}> Your guardian ID </Text>
+        {deviceId ? <QRCode value={deviceId} /> : null}
       </SafeAreaView>
     </SafeAreaView>
   );
@@ -46,14 +46,14 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E8EAED',
+    backgroundColor: COLORS.lightGray,
     alignItems: 'center',
     justifyContent: 'center',
   },
   button: {
     paddingVertical: 15,
     paddingHorizontal: 15,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderRadius: 15,
     width: 290,
     alignItems: 'center',
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   guardianIdContainer: {
     paddingVertical: 15,
     paddingHorizontal: 15,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderRadius: 15,
     width: 200,
     height: 200,

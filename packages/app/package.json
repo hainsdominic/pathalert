@@ -2,18 +2,20 @@
   "name": "@pathalert/app",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "__generated__/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "dev": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "postinstall": "expo-yarn-workspaces postinstall"
   },
   "dependencies": {
     "expo": "~42.0.1",
     "expo-status-bar": "~1.0.4",
+    "expo-yarn-workspaces": "^1.5.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
@@ -21,8 +23,7 @@
     "react-native-qrcode-svg": "^6.1.1",
     "react-native-svg": "^12.1.1",
     "react-native-web": "~0.13.12",
-    "styled-components": "^5.3.0",
-    "uuid": "^8.3.2"
+    "styled-components": "^5.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"
