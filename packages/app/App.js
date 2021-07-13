@@ -1,22 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  TextInput,
-  Alert,
-} from 'react-native';
+import React, { useEffect } from 'react';
+import { StatusBar, Alert } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import QRCode from 'react-native-qrcode-svg';
 import * as Device from 'expo-device';
 
-import { COLORS } from './assets/styles';
-import { getId } from './assets/requests';
+import GuardiansListScreen from './components/GuardiansListScreen';
+import PathScreen from './components/PathScreen';
+import MeScreen from './components/MeScreen';
 
-export default function App() {
-  const [deviceId, setDeviceId] = useState('');
+const Tab = createBottomTabNavigator();
+
+const screenOptions = (route, color) => {
+  let iconName;
+
+  switch (route.name) {
+    case 'Path':
+      iconName = 'walk-outline';
+      break;
+    case 'GuardiansList':
+      iconName = 'shield-outline';
+      break;
+    case 'Me':
+      iconName = 'person-circle-outline';
+      break;
+    default:
+      break;
+  }
+
+  return <Ionicons name={iconName} color={color} size={24} />;
+};
+
+const App = () => {
+  // Make the status bar visible
+  StatusBar.setBarStyle('dark-content', true);
 
   useEffect(() => {
     (async () => {
@@ -36,9 +54,6 @@ export default function App() {
 
           // Store the id in storage
           await AsyncStorage.setItem('@deviceId', id);
-          setDeviceId(id);
-        } else {
-          setDeviceId(storedDeviceId);
         }
       } catch (error) {
         console.log(error);
@@ -48,58 +63,21 @@ export default function App() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        onPress={() => console.log('new path')}
-        style={styles.button}
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ color }) => screenOptions(route, color),
+        })}
+        tabBarOptions={{
+          showLabel: false,
+        }}
       >
-        <Text style={styles.buttonText}> Start a new path </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => console.log('guardians')}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}> My Guardians </Text>
-      </TouchableOpacity>
-      <SafeAreaView style={styles.guardianIdContainer}>
-        <Text style={styles.guardianIdText}> Your guardian ID </Text>
-        {deviceId ? <QRCode value={deviceId} /> : null}
-      </SafeAreaView>
-    </SafeAreaView>
+        <Tab.Screen name='Path' component={PathScreen} />
+        <Tab.Screen name='GuardiansList' component={GuardiansListScreen} />
+        <Tab.Screen name='Me' component={MeScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.lightGray,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: COLORS.white,
-    borderRadius: 15,
-    width: 290,
-    alignItems: 'center',
-    marginTop: 15,
-  },
-  buttonText: {
-    fontSize: 14,
-  },
-  guardianIdContainer: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: COLORS.white,
-    borderRadius: 15,
-    width: 200,
-    height: 200,
-    alignItems: 'center',
-    marginTop: 35,
-  },
-  guardianIdText: {
-    marginVertical: 15,
-    fontSize: 16,
-  },
-});
+export default App;
