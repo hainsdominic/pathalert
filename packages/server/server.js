@@ -8,14 +8,19 @@ const cors = require('cors');
 const morgan = require('morgan');
 const colors = require('colors');
 
+const connectDB = require('./config/db');
+
 const app = express();
+
+// Load env variables
+dotenv.config({ path: './config/config.env' });
 
 if (process.env.NODE_ENV === 'production') {
   app.set('trust proxy', true);
 }
 
-// Load env variables
-dotenv.config({ path: './config/config.env' });
+// Connect database
+connectDB();
 
 // Sanitize data
 app.use(mongoSanitize());
@@ -42,6 +47,7 @@ app.use(express.json({ extended: false }));
 app.get('/', (req, res) => res.send('API Running'));
 
 // Define Routes
+app.use('/api/auth', require('./routes/api/auth'));
 
 const PORT = process.env.PORT || 5000;
 
