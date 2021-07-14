@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { COLORS } from '../assets/styles';
 import { getGuardians, deleteGuardians } from '../assets/requests';
@@ -28,16 +29,20 @@ const Item = ({ title, id, deleteGuardian }) => (
   </View>
 );
 
-const GuardiansListScreen = () => {
+const GuardiansListScreen = ({ navigation }) => {
   const [guardians, setGuardians] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const deviceId = await AsyncStorage.getItem('@deviceId');
-      const fetchedGuardians = await getGuardians(deviceId);
-      setGuardians(fetchedGuardians);
-    })();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      updateGuardians();
+    }, [])
+  );
+
+  const updateGuardians = async () => {
+    const deviceId = await AsyncStorage.getItem('@deviceId');
+    const fetchedGuardians = await getGuardians(deviceId);
+    setGuardians(fetchedGuardians);
+  };
 
   const deleteGuardian = async (id) => {
     const deviceId = await AsyncStorage.getItem('@deviceId');
@@ -61,7 +66,7 @@ const GuardiansListScreen = () => {
             <Text style={styles.guardians}>Your guardians</Text>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => console.log('add')}
+              onPress={() => navigation.navigate('QRCodeScanner')}
             >
               <Ionicons name={'person-add-outline'} color='gray' size={24} />
             </TouchableOpacity>

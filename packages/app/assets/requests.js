@@ -33,3 +33,11 @@ export const deleteGuardians = async (id, deviceId) => {
     console.log(error.message);
   }
 };
+
+export const addGuardian = async (id, deviceId) => {
+  try {
+    await axios.post(`${URI}/api/guardians/${deviceId}/${id}`);
+  } catch (error) {
+    console.log(error.message);
+  }
+};

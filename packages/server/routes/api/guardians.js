@@ -42,4 +42,26 @@ router.delete('/:deviceId/:id', async (req, res) => {
   }
 });
 
+// @route POST api/guardians/:deviceId/:id
+// @desc Add a guardian and returns an array of guardians for a given id
+// @access Public
+router.post('/:deviceId/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deviceId = req.params.deviceId;
+    let device = await Device.findById(deviceId);
+
+    if (device.guardians?.indexOf(id) === -1) {
+      device.guardians.push(id);
+    }
+
+    await device.save();
+
+    res.json();
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
