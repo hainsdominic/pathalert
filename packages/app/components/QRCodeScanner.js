@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, SafeAreaView } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
 
 import { COLORS } from '../assets/styles';
 import { addGuardian } from '../assets/requests';
@@ -33,6 +40,9 @@ const QRCodeScanner = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.explanationContainer}>
+        <Text style={styles.explanation}>Scan the Guardian ID (QR Code)</Text>
+      </View>
       <View style={styles.scannerContainer}>
         <View style={styles.scanner}>
           <BarCodeScanner
@@ -41,9 +51,10 @@ const QRCodeScanner = ({ navigation }) => {
           />
         </View>
       </View>
-      <View style={styles.explanationContainer}>
-        <Text style={styles.explanation}>Scan the Guardian ID (QR Code)</Text>
-      </View>
+
+      <TouchableOpacity style={styles.back} onPress={() => navigation.goBack()}>
+        <Ionicons name={'arrow-back-outline'} color='gray' size={32} />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -59,22 +70,18 @@ const styles = StyleSheet.create({
   },
   scanner: {
     backgroundColor: COLORS.white,
-    borderRadius: 30,
-    width: 250,
-    height: 250,
+    width: 280,
+    height: 280,
     alignItems: 'center',
   },
   scannerContainer: {
     backgroundColor: COLORS.white,
-    borderRadius: 15,
     width: 300,
     height: 300,
     alignItems: 'center',
     justifyContent: 'center',
   },
   explanationContainer: {
-    marginTop: 20,
-    backgroundColor: COLORS.white,
     paddingVertical: 15,
     paddingHorizontal: 15,
     borderRadius: 15,
@@ -85,5 +92,8 @@ const styles = StyleSheet.create({
   explanation: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  back: {
+    marginTop: 60,
   },
 });

@@ -5,10 +5,10 @@ import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Device from 'expo-device';
 
-import GuardiansListScreen from './components/GuardiansListScreen';
-import PathScreen from './components/PathScreen';
-import MeScreen from './components/MeScreen';
-import { getId } from './assets/requests';
+import GuardiansListScreen from './GuardiansListScreen';
+import PathScreen from './PathScreen';
+import MeScreen from './MeScreen';
+import { getId } from '../assets/requests';
 
 const Tab = createBottomTabNavigator();
 
