@@ -40,7 +40,7 @@ router.post('/', rateLimiter, async (req, res) => {
 router.get('/seed', async (req, res) => {
   try {
     // The user you want to seed
-    const testUser = await Device.findById('<YOUR_DEVICE_ID>');
+    const testUser = await Device.findById('60edc81bb599c6cb67bb62e4');
 
     // Creates users with fake names and adds them to the testUser's guardians
     for (let i = 0; i < 5; i++) {

@@ -9,6 +9,7 @@ import * as Device from 'expo-device';
 import GuardiansListScreen from './components/GuardiansListScreen';
 import PathScreen from './components/PathScreen';
 import MeScreen from './components/MeScreen';
+import { getId } from './assets/requests';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,8 +50,6 @@ const App = () => {
 
           // Get a new id from the API
           const id = await getId(deviceName);
-
-          console.log(id);
 
           // Store the id in storage
           await AsyncStorage.setItem('@deviceId', id);
