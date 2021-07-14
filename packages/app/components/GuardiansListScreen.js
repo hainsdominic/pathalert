@@ -24,7 +24,7 @@ const Item = ({ title, id, deleteGuardian }) => (
       style={styles.closeButton}
       onPress={() => deleteGuardian(id)}
     >
-      <Ionicons name={'close-outline'} size={20} />
+      <Ionicons name={'close-outline'} size={32} />
     </TouchableOpacity>
   </View>
 );
@@ -108,15 +108,8 @@ const styles = StyleSheet.create({
   closeButton: {
     marginTop: 20,
     marginLeft: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 5,
-    backgroundColor: COLORS.white,
-    borderRadius: 50,
-    width: 40,
-    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.lightRed,
   },
   guardianContainer: {
     display: 'flex',
