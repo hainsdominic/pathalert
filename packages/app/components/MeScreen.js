@@ -5,7 +5,6 @@ import QRCode from 'react-native-qrcode-svg';
 import * as Device from 'expo-device';
 
 import { COLORS } from '../assets/styles';
-import { getId } from '../assets/requests';
 
 const MeScreen = ({ navigation }) => {
   const [deviceId, setDeviceId] = useState('');

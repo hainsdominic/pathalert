@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const rateLimit = require('express-rate-limit');
+const faker = require('faker');
 
 const Device = require('../../models/Device');
 
@@ -15,7 +16,7 @@ const rateLimiter = rateLimit({
 
 // @route POST api/auth
 // @desc Register device and return new id
-// @access Private
+// @access Public
 router.post('/', rateLimiter, async (req, res) => {
   try {
     // Create the new id
@@ -27,6 +28,33 @@ router.post('/', rateLimiter, async (req, res) => {
     await newDevice.save();
 
     res.json(newDevice.id);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route POST api/auth
+// @desc Seeding the db for test purposes
+// @access Public
+router.get('/seed', async (req, res) => {
+  try {
+    // The user you want to seed
+    const testUser = await Device.findById('<YOUR_DEVICE_ID>');
+
+    // Creates users with fake names and adds them to the testUser's guardians
+    for (let i = 0; i < 5; i++) {
+      const newDevice = new Device({
+        deviceName: faker.name.findName(),
+      });
+      await newDevice.save();
+
+      testUser.guardians.push(newDevice.id);
+    }
+
+    await testUser.save();
+
+    res.send('OK');
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

@@ -5,6 +5,12 @@ const DeviceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  guardians: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Device',
+    },
+  ],
 });
 
 module.exports = User = mongoose.model('Device', DeviceSchema);

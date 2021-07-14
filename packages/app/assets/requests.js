@@ -15,3 +15,21 @@ export const getId = async (deviceName) => {
     console.log(error.message);
   }
 };
+
+export const getGuardians = async (id) => {
+  try {
+    const res = await axios.get(`${URI}/api/guardians/${id}`);
+    return res.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const deleteGuardians = async (id, deviceId) => {
+  try {
+    const res = await axios.delete(`${URI}/api/guardians/${deviceId}/${id}`);
+    return res.data;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
