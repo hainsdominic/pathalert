@@ -1,53 +1,68 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Dimensions, Alert } from 'react-native';
+import MapView from 'react-native-maps';
+import * as Location from 'expo-location';
+import { useFocusEffect } from '@react-navigation/native';
 
 import { COLORS } from '../assets/styles';
 
 const PathScreen = () => {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      })();
+    }, [])
+  );
+
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        onPress={() => console.log('path')}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}> Path Screen </Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+    <View style={styles.container}>
+      {!errorMsg ? (
+        location ? (
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 1,
+              longitudeDelta: 1,
+            }}
+          />
+        ) : null
+      ) : (
+        <Text>{errorMsg}</Text>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightGray,
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: COLORS.white,
-    borderRadius: 15,
-    width: 290,
-    alignItems: 'center',
-    marginTop: 15,
-  },
-  buttonText: {
-    fontSize: 14,
-  },
-  guardianIdContainer: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: COLORS.white,
-    borderRadius: 15,
-    width: 200,
-    height: 200,
-    alignItems: 'center',
-    marginTop: 35,
-  },
-  guardianIdText: {
-    marginVertical: 15,
-    fontSize: 16,
+  map: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 });
 
