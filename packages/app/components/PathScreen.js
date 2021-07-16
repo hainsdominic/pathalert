@@ -9,6 +9,7 @@ import { COLORS } from '../assets/styles';
 const PathScreen = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [permRequested, setPermRequested] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -18,16 +19,22 @@ const PathScreen = () => {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      if (!permRequested) {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location);
+      }
+
+      setPermRequested(true);
     })();
   }, []);
 
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
+        if (permRequested) {
+          let location = await Location.getCurrentPositionAsync({});
+          setLocation(location);
+        }
       })();
     }, [])
   );
