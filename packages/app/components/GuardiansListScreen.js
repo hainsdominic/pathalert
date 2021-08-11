@@ -65,10 +65,16 @@ const GuardiansListScreen = ({ navigation }) => {
           <View style={styles.guardianContainer}>
             <Text style={styles.guardians}>Your guardians</Text>
             <TouchableOpacity
-              style={styles.addButton}
+              style={styles.iconButton}
               onPress={() => navigation.navigate('QRCodeScanner')}
             >
               <Ionicons name={'person-add-outline'} color='gray' size={24} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.iconButton}
+              onPress={() => navigation.navigate('PastAlerts')}
+            >
+              <Ionicons name={'alert-circle-outline'} color='gray' size={26} />
             </TouchableOpacity>
           </View>
 
@@ -117,8 +123,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  addButton: {
-    marginLeft: 15,
+  iconButton: {
+    marginLeft: 20,
   },
 });
 
