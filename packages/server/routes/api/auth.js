@@ -34,6 +34,27 @@ router.post('/', rateLimiter, async (req, res) => {
   }
 });
 
+// @route POST api/auth/token
+// @desc Register expo push notifications token
+// @access Public
+router.post('/token', async (req, res) => {
+  try {
+    // Create the new id
+    const { token, deviceId } = req.body;
+
+    const device = await Device.findById(deviceId);
+
+    device.token = token;
+
+    await device.save();
+
+    res.send(201);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 // @route POST api/auth
 // @desc Seeding the db for test purposes
 // @access Public

@@ -11,6 +11,10 @@ const DeviceSchema = new mongoose.Schema({
       ref: 'Device',
     },
   ],
+  token: {
+    type: String,
+    required: false,
+  },
 });
 
 module.exports = User = mongoose.model('Device', DeviceSchema);

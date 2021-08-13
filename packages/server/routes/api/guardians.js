@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const { Expo } = require('expo-server-sdk');
 
 const Device = require('../../models/Device');
+
+let expo = new Expo();
 
 // @route GET api/guardians/:id
 // @desc Returns an array of guardians for a given id

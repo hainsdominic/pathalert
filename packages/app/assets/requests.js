@@ -41,3 +41,11 @@ export const addGuardian = async (id, deviceId) => {
     console.log(error.message);
   }
 };
+
+export const saveNotificationsToken = async (token, deviceId) => {
+  try {
+    await axios.post(`${URI}/api/auth/token`, { token, deviceId });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
