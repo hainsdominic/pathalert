@@ -49,3 +49,15 @@ export const saveNotificationsToken = async (token, deviceId) => {
     console.log(error.message);
   }
 };
+
+export const sendAlert = async (deviceId, lat, lon, safe) => {
+  try {
+    await axios.post(`${URI}/api/guardians/notify/${deviceId}`, {
+      lat,
+      lon,
+      safe,
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

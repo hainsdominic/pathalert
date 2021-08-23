@@ -17,7 +17,59 @@ router.get('/:id', async (req, res) => {
     res.json(device.guardians);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.sendStatus(500).send('Server Error');
+  }
+});
+
+// @route POST api/guardians/notify/:deviceId
+// @desc Notify all the guardians of a device
+// @access Public
+router.post('/notify/:deviceId', async (req, res) => {
+  try {
+    const deviceId = req.params.deviceId;
+    const { lat, lon, safe } = req.body;
+
+    const device = await Device.findById(deviceId).populate('guardians');
+
+    const pushTokens = device.guardians.map((guardian) => guardian.token);
+
+    // Create the messages that you want to send to clients
+    let messages = [];
+    for (let pushToken of pushTokens) {
+      // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
+
+      // Check that all your push tokens appear to be valid Expo push tokens
+      if (!Expo.isExpoPushToken(pushToken)) {
+        console.error(`Push token ${pushToken} is not a valid Expo push token`);
+        continue;
+      }
+
+      // Construct a message (see https://docs.expo.io/push-notifications/sending-notifications/)
+      messages.push({
+        to: pushToken,
+        sound: 'default',
+        title: `${device.deviceName} is ${safe ? 'safe' : 'not safe'}!`,
+        body: 'Go into the app to see its localisation',
+      });
+    }
+
+    let chunks = expo.chunkPushNotifications(messages);
+    for (let chunk of chunks) {
+      try {
+        await expo.sendPushNotificationsAsync(chunk);
+        // NOTE: If a ticket contains an error code in ticket.details.error, you
+        // must handle it appropriately. The error codes are listed in the Expo
+        // documentation:
+        // https://docs.expo.io/push-notifications/sending-notifications/#individual-errors
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err.message);
+    res.sendStatus(500).send('Server Error');
   }
 });
 
@@ -41,7 +93,7 @@ router.delete('/:deviceId/:id', async (req, res) => {
     res.json(device.guardians);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.sendStatus(500).send('Server Error');
   }
 });
 
@@ -63,7 +115,7 @@ router.post('/:deviceId/:id', async (req, res) => {
     res.json();
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.sendStatus(500).send('Server Error');
   }
 });
 

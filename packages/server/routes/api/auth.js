@@ -10,7 +10,7 @@ const rateLimiter = rateLimit({
   windowMs: 60 * 30 * 1000, // 30 minutes
   max: 10, // 10 requests per 30mins
   handler: function (req, res) {
-    return res.status(429).json({ errors: [{ msg: 'Try again later.' }] });
+    return res.sendStatus(429).json({ errors: [{ msg: 'Try again later.' }] });
   },
 });
 
@@ -30,7 +30,7 @@ router.post('/', rateLimiter, async (req, res) => {
     res.json(newDevice.id);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.sendStatus(500).send('Server Error');
   }
 });
 
@@ -48,10 +48,10 @@ router.post('/token', async (req, res) => {
 
     await device.save();
 
-    res.send(201);
+    res.sendStatus(201);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.sendStatus(500).send('Server Error');
   }
 });
 
@@ -78,7 +78,7 @@ router.get('/seed', async (req, res) => {
     res.send('OK');
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.sendStatus(500).send('Server Error');
   }
 });
 

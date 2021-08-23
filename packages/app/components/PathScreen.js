@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, SafeAreaView, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
-import { useFocusEffect } from '@react-navigation/native';
+import timer from 'react-native-timer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { COLORS } from '../assets/styles';
+
+import { sendAlert } from '../assets/requests';
 
 const PathScreen = () => {
   const [location, setLocation] = useState(null);
@@ -20,25 +23,28 @@ const PathScreen = () => {
         return;
       }
 
-      if (!permRequested) {
-        let location = await Location.getCurrentPositionAsync({});
-        setLocation(location);
-      }
-
       setPermRequested(true);
     })();
   }, []);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      (async () => {
-        if (permRequested) {
-          let location = await Location.getCurrentPositionAsync({});
-          setLocation(location);
-        }
-      })();
-    }, [])
-  );
+  const handleNotification = async () => {
+    setDanger(!danger);
+    if (!danger) {
+      timer.setInterval('timer', () => sendNotification(false), 60000);
+    } else {
+      sendNotification(true);
+      timer.clearInterval('timer');
+    }
+  };
+
+  const sendNotification = async (safe) => {
+    const {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync({});
+    const storedDeviceId = await AsyncStorage.getItem('@deviceId');
+
+    sendAlert(storedDeviceId, latitude, longitude, safe);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -47,7 +53,9 @@ const PathScreen = () => {
           styles.panicButton,
           { backgroundColor: danger ? COLORS.lightGreen : COLORS.lightRed },
         ]}
-        onPress={() => setDanger(!danger)}
+        onPress={() => {
+          handleNotification();
+        }}
       >
         <Text style={styles.panicButtonText}>
           {danger ? 'I am safe' : "I don't feel safe"}

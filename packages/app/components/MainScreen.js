@@ -60,11 +60,9 @@ const MainScreen = () => {
         console.log(error);
         Alert.alert('An error occured.', 'Are you connected to internet?');
       }
-    })();
 
-    // Gets the push notifications token
-    // https://docs.expo.dev/push-notifications/push-notifications-setup/
-    (async () => {
+      // Gets the push notifications token
+      // https://docs.expo.dev/push-notifications/push-notifications-setup/
       try {
         if (Constants.isDevice) {
           const storedDeviceId = await AsyncStorage.getItem('@deviceId');
