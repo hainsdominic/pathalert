@@ -9,7 +9,6 @@ import { COLORS } from '../assets/styles';
 import { sendAlert } from '../assets/requests';
 
 const PathScreen = () => {
-  const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [permRequested, setPermRequested] = useState(false);
 
@@ -30,6 +29,7 @@ const PathScreen = () => {
   const handleNotification = async () => {
     setDanger(!danger);
     if (!danger) {
+      sendNotification(false);
       timer.setInterval('timer', () => sendNotification(false), 60000);
     } else {
       sendNotification(true);

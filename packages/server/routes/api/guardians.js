@@ -33,6 +33,20 @@ router.post('/notify/:deviceId', async (req, res) => {
 
     const pushTokens = device.guardians.map((guardian) => guardian.token);
 
+    for (const guardian of device.guardians) {
+      let currentGuardian = await Device.findById(guardian._id);
+
+      currentGuardian.alerts.push({
+        device: deviceId,
+        date: new Date(),
+        safe,
+        lat,
+        lon,
+      });
+
+      await currentGuardian.save();
+    }
+
     // Create the messages that you want to send to clients
     let messages = [];
     for (let pushToken of pushTokens) {
