@@ -1,6 +1,6 @@
 {
   "name": "@pathalert/app",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "MIT",
   "main": "__generated__/AppEntry.js",
   "scripts": {
