@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import MainScreen from './components/MainScreen';
-import QRCodeScanner from './components/QRCodeScanner.js';
+import QRCodeScanner from './components/QRCodeScanner';
+import AlertsListScreen from './components/AlertsListScreen';
 
 const RootStack = createStackNavigator();
 
@@ -14,6 +15,11 @@ const App = () => {
         <RootStack.Screen
           name='Main'
           component={MainScreen}
+          options={{ headerShown: false }}
+        />
+        <RootStack.Screen
+          name='AlertsListScreen'
+          component={AlertsListScreen}
           options={{ headerShown: false }}
         />
         <RootStack.Screen

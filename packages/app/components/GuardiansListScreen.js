@@ -72,7 +72,7 @@ const GuardiansListScreen = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.iconButton}
-              onPress={() => navigation.navigate('PastAlerts')}
+              onPress={() => navigation.navigate('AlertsListScreen')}
             >
               <Ionicons name={'alert-circle-outline'} color='gray' size={26} />
             </TouchableOpacity>

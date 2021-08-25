@@ -24,7 +24,7 @@ router.get('/:id', async (req, res) => {
 // @route POST api/guardians/notify/:deviceId
 // @desc Notify all the guardians of a device
 // @access Public
-router.post('/notify/:deviceId', async (req, res) => {
+router.post('/alerts/:deviceId', async (req, res) => {
   try {
     const deviceId = req.params.deviceId;
     const { lat, lon, safe } = req.body;
@@ -81,6 +81,21 @@ router.post('/notify/:deviceId', async (req, res) => {
     }
 
     res.sendStatus(200);
+  } catch (err) {
+    console.error(err.message);
+    res.sendStatus(500).send('Server Error');
+  }
+});
+
+// @route GET api/guardians/alerts/:id
+// @desc Returns an array of alerts for a given id
+// @access Public
+router.get('/alerts/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const device = await Device.findById(id).populate('alerts.device');
+
+    res.json(device.alerts);
   } catch (err) {
     console.error(err.message);
     res.sendStatus(500).send('Server Error');
