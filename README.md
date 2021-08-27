@@ -30,12 +30,6 @@ PORT=5000
 MONGO_URI=<YOUR MONGODB URI>
 ```
 
-Go to package/app/ and create a new file named .env
-
-```
-LOCAL_API_URI=<LOCAL IP OF THE COMPUTER RUNNING THE SERVER>
-```
-
 Install the dependencies and dev dependencies and start the metro server and the server.
 
 ```sh
