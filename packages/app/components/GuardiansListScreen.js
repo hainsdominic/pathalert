@@ -60,31 +60,30 @@ const GuardiansListScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {guardians ? (
-        <SafeAreaView>
-          <View style={styles.guardianContainer}>
-            <Text style={styles.guardians}>Your guardians</Text>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => navigation.navigate('QRCodeScanner')}
-            >
-              <Ionicons name={'person-add-outline'} color='gray' size={24} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={() => navigation.navigate('AlertsListScreen')}
-            >
-              <Ionicons name={'alert-circle-outline'} color='gray' size={26} />
-            </TouchableOpacity>
-          </View>
-
+      <SafeAreaView>
+        <View style={styles.guardianContainer}>
+          <Text style={styles.guardians}>Your guardians</Text>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => navigation.navigate('QRCodeScanner')}
+          >
+            <Ionicons name={'person-add-outline'} color='gray' size={24} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => navigation.navigate('AlertsListScreen')}
+          >
+            <Ionicons name={'alert-circle-outline'} color='gray' size={26} />
+          </TouchableOpacity>
+        </View>
+        {guardians ? (
           <FlatList
             data={guardians}
             renderItem={renderItem}
             keyExtractor={(guardian) => guardian._id}
           />
-        </SafeAreaView>
-      ) : null}
+        ) : null}
+      </SafeAreaView>
     </SafeAreaView>
   );
 };
