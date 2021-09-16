@@ -1,4 +1,10 @@
-# PathAlert
+<h1 align="center">
+  <br>
+    <img src="https://github.com/hainsdominic/pathalert/blob/master/packages/app/assets/icon.png?raw=true" alt="PathAlert" height="200">
+  <br>
+  Path Alert
+  <br>
+</h1>
 
 ## _A mobile app to make journeys safer._
 
